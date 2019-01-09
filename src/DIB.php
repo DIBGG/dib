@@ -97,7 +97,7 @@ class DIB
         }
         $response = curl_exec($ch);
         curl_close($ch);
-        $response = $response ? json_decode(json_encode($response), 1) : [];
+        $response = $response ? json_decode($response, 1) : [];
         return $response;
     }
 
