@@ -1,0 +1,22 @@
+{
+    "name": "DIBGG/dib ",
+    "description": "SDK for DIB-An open, reliable and decentralized gaming-items platform",
+    "license": "MIT",
+    "keywords": ["dib","DIB"],
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "haozhenhua",
+            "email": "haozhenhua@eschain.pro"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "dib": "src/"
+        }
+    }
+}
