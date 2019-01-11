@@ -36,4 +36,4 @@ $res=$dib->presentEquips($steamuid,$items,$flag_code);
 
 ```
 
-更多请参考 [https://github.com/eschain/dib.gg/wiki/](https://github.com/eschain/dib.gg/wiki/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E)。
+更多请参考 [https://github.com/DIBGG/dib/wiki](https://github.com/DIBGG/dib/wiki)。
