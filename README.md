@@ -30,7 +30,7 @@ $items=[
     "E030603"=>1,
     "E030602"=>2
     ];
-$res=$dib->push_transaction($from,$to,$items,);
+$res=$dib->push_transaction($from,$to,$items);
 
 
 //4、查询交易状态
