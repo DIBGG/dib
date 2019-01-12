@@ -30,10 +30,13 @@ $items=[
     "E030603"=>1,
     "E030602"=>2
     ];
+$from=546532134853;
+$to=546532134853;
 $res=$dib->push_transaction($from,$to,$items);
 
 
 //4、查询交易状态
+$order_no=2313565633115;
 $res=$dib->get_status($order_no);
 
 ```
