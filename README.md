@@ -16,7 +16,7 @@ $dib=new DIB($ak);
 
 
 //1、获取分类等级信息
-$res=$dib->get_info($parent_id);
+$res=$dib->get_info();
 
 
 //2、获取用户资产信息
