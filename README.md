@@ -1,4 +1,4 @@
-# DIB.GG 接口SDK封装
+# DICB接口SDK封装
 SDK for DIB-An open, reliable and decentralized gaming-items platform
 
 ## Usage
@@ -7,33 +7,32 @@ SDK for DIB-An open, reliable and decentralized gaming-items platform
 
 ```php
 <?php
-
 use dib\DIB;;
 
-//用户accesstoken
+//用户ak
 $ak='dfsfdfg2332';
 
 $dib=new DIB($ak);
 
-//获取某用户名下装备信息,$steamuid要索要人的steamuid
+
+//1、获取分类等级信息
+$res=$dib->get_info($parent_id);
+
+
+//2、获取用户资产信息
 $steamuid="45646312465312";
-$res=$dib->getEquips($steamuid);
+$res=$dib->get_account($steamuid);
 
 
-//主动向某用户索取装备
+//3、发起一笔交易
 //items:要索要的装备信息，键为E开头,数字前两位为装备大类 之后两位为装备小类，最后两位是装备等级,值为装备的数量
-//flag_code:订单标识码，当订单成功或失败，用于回调验证
 $items=[
     "E030603"=>1,
     "E030602"=>2
     ];
-$flag_code=46335321;
-$res=$dib->demandEquips($steamuid,$items,$flag_code);
+$res=$dib->push_transaction($from,$to,$items,);
 
 
-//获取某用户名下装备信息
-$res=$dib->presentEquips($steamuid,$items,$flag_code);
+//4、查询交易状态
+$res=$dib->get_status($order_no);
 
-```
-
-更多请参考 [https://github.com/DIBGG/dib/wiki](https://github.com/DIBGG/dib/wiki)。

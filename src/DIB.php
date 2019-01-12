@@ -3,7 +3,7 @@
 namespace dib;
 class DIB
 {
-    public $prefix = 'https://gg.com/index.php/v1/api/';
+    public $prefix = 'https://gg.com/index.php/v1/';
     private $AK;
 
     public function __construct($AK)
@@ -15,22 +15,9 @@ class DIB
     /*
      * 获取装备分类
      * */
-    public function EquipType($parent_id=0){
-        $url = 'equip/type';
-        $time = time();
-        $trade_info = [
-            'parent_id' => $parent_id,
-            'sign' => $this->_sign([], $time),
-            'time' => $time
-        ];
-        return $this->_get_url($this->prefix . $url, $trade_info);
-    }
-
-    /*
-     * 级别分类
-     * */
-    public function EquipLeve(){
-        $url = 'equip/level';
+    public function get_info()
+    {
+        $url = 'get_info';
         $time = time();
         $trade_info = [
             'sign' => $this->_sign([], $time),
@@ -42,9 +29,9 @@ class DIB
     /*
      * 获取某用户名下装备信息
      * */
-    public function getUserEquips($steamuid)
+    public function get_account($steamuid)
     {
-        $url = 'user/equips';
+        $url = 'get_account';
         $time = time();
         $trade_info = [
             'steamuid' => $steamuid,
@@ -57,33 +44,16 @@ class DIB
     /*
      * 向某人索要装备
      * */
-    public function askForEquips(string $steamuid, array $items, $flag_code)
+    public function push_transaction($from, $to, array $items)
     {
-        $url = 'askFor/equips';
+        $url = 'push_transaction';
         $time = time();
         $trade_info = [
-            'steamuid' => $steamuid,
+            'from' => $from,
+            'to' => $to,
             'items' => $items,
             'sign' => $this->_sign($items, $time),
             'time' => $time,
-            'flag_code' => $flag_code
-        ];
-        return $this->_post_url($this->prefix . $url, $trade_info);
-    }
-
-    /*
-     * 向某用户赠送装备
-     * */
-    public function presentEquips(string $steamuid, array $items, $flag_code)
-    {
-        $url = 'equips/demand';
-        $time = time();
-        $trade_info = [
-            'steamuid' => $steamuid,
-            'items' => $items,
-            'sign' => $this->_sign($items, $time),
-            'time' => $time,
-            'flag_code' => $flag_code
         ];
         return $this->_post_url($this->prefix . $url, $trade_info);
     }
@@ -91,14 +61,14 @@ class DIB
     /*
      * 查询状态
      * */
-    public function queryOrderStatus($flag_code)
+    public function get_status($order_no)
     {
-        $url = 'query/order';
+        $url = 'get_status';
         $time = time();
         $trade_info = [
             'sign' => $this->_sign([], $time),
             'time' => $time,
-            'flag_code' => $flag_code
+            'order_no' => $order_no
         ];
         return $this->_post_url($this->prefix . $url, $trade_info);
     }
@@ -108,12 +78,12 @@ class DIB
      * */
     private function _get_url($url, $trade_info)
     {
-        return $this->_curl($url,json_encode($trade_info),1);
+        return $this->_curl($url, json_encode($trade_info), 1);
     }
 
     private function _post_url($url, $trade_info)
     {
-        return $this->_curl($url,json_encode($trade_info),1);
+        return $this->_curl($url, json_encode($trade_info), 1);
     }
 
     private function _curl($url, $params = false, $ispost = 0)
