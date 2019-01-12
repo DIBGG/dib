@@ -36,3 +36,5 @@ $res=$dib->push_transaction($from,$to,$items,);
 //4、查询交易状态
 $res=$dib->get_status($order_no);
 
+```
+更多请参考 [https://github.com/DIBGG/dib/wiki](https://github.com/DIBGG/dib/wiki)。
