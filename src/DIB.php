@@ -9,7 +9,7 @@ use kornrunner\Keccak;
 
 class DIB
 {
-    public $prefix = 'https://dib.gg/v1/';
+    public $prefix = 'https://api.dib.gg/v1/';
     private $AccessKey;
 
     public function __construct($AccessKey)
