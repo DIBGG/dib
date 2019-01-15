@@ -15,29 +15,32 @@ $ak='dfsfdfg2332';
 $dib=new DIB($ak);
 
 
-//1、获取分类等级信息
-$res=$dib->get_info();
+//1、返回包含所有项目详细信息和供应信息的列表
+$res=$dib->getItemsInfo();
 
 
-//2、获取用户资产信息
+//2、返回给定steam用户的dib wallet帐户
 $steamuid="45646312465312";
-$res=$dib->get_account($steamuid);
+$res=$dib->getAccountBySteamUID($steamuid);
 
 
-//3、发起一笔交易
-//items:要索要的装备信息，键为E开头,数字前两位为装备大类 之后两位为装备小类，最后两位是装备等级,值为装备的数量
-$items=[
-    "E030603"=>1,
-    "E030602"=>2
-    ];
-$from=546532134853;
-$to=546532134853;
-$res=$dib->push_transaction($from,$to,$items);
+//3、返回给定用户的项目余额
+$account="45646312465312";
+$res=$dib->getBalance($account);
+
+
+//3、发送已签名的交易，向用户发送项目或从其他人提取项目
+$action="transfer";
+$address="0x88d60210d5c690d7191957246706d1658157340e";
+$item_code= ["E020401","E030304"];
+$item_value= [1,2];
+$privateKey='0x61c5c7cef76f518ef75a7e40549d9efdf42fb627be0d2dad3836b43e7e784552';
+$res=$dib->sendRawTransaction($action,$address,$item_code,$item_value,$privateKey);
 
 
 //4、查询交易状态
-$order_no=2313565633115;
-$res=$dib->get_status($order_no);
+$hash='0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b';
+$res=$dib->getTransactionByHash($hash);
 
 ```
 更多请参考 [https://github.com/DIBGG/dib/wiki](https://github.com/DIBGG/dib/wiki)。

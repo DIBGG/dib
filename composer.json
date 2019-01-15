@@ -11,7 +11,11 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3"
+        "php": ">=7.1.3",
+        "web3p/rlp": "^0.2.2",
+        "kornrunner/secp256k1": "^0.1.1",
+        "kornrunner/keccak": "^1.0",
+        "simplito/elliptic-php": "^1.0"
     },
 
     "autoload": {

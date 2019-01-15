@@ -1,89 +1,97 @@
 <?php
 
 namespace dib;
+require_once("../vendor/autoload.php");
+
+use Web3p\RLP\RLP;
+use Elliptic\EC;
+use kornrunner\Keccak;
+
 class DIB
 {
-    public $prefix = 'https://gg.com/index.php/v1/';
-    private $AK;
+    public $prefix = 'http://gg.com/index.php/v1/';
+    private $AccessKey;
 
-    public function __construct($AK)
+    public function __construct($AccessKey)
     {
-        $this->AK = $AK;
+        $this->AccessKey = $AccessKey;
         return $this;
     }
 
     /*
      * 获取装备分类
      * */
-    public function get_info()
+    public function getItemsInfo()
     {
-        $url = 'get_info';
-        $time = time();
-        $trade_info = [
-            'sign' => $this->_sign([], $time),
-            'time' => $time
-        ];
-        return $this->_get_url($this->prefix . $url, $trade_info);
+        return $this->_post_url('getItemTypes', []);
     }
 
     /*
      * 获取某用户名下装备信息
      * */
-    public function get_account($steamuid)
+    public function getBalance(array $account)
     {
-        $url = 'get_account';
-        $time = time();
-        $trade_info = [
-            'steamuid' => $steamuid,
-            'sign' => $this->_sign([], $time),
-            'time' => $time
-        ];
-        return $this->_get_url($this->prefix . $url, $trade_info);
+        return $this->_post_url('getBalance', $account);
+    }
+
+    /*
+     * 获取某用户名下装备信息
+     * */
+    public function getAccountBySteamUID($account)
+    {
+        return $this->_post_url('getAccountBySteamUID', $account);
     }
 
     /*
      * 向某人索要装备
      * */
-    public function push_transaction($from, $to, array $items)
+    public function sendRawTransaction($action, $address, $item_code, $item_value, $privateKey)
     {
-        $url = 'push_transaction';
-        $time = time();
-        $trade_info = [
-            'from' => $from,
-            'to' => $to,
-            'items' => $items,
-            'sign' => $this->_sign($items, $time),
-            'time' => $time,
+        $actionData = [
+            'action' => $action,
+            'address' => $address,
+            'item_code' => $item_code,
+            'item_value' => $item_value
         ];
-        return $this->_post_url($this->prefix . $url, $trade_info);
+        $rlp = new RLP;
+        $actionDataHash = $rlp->encode($actionData)->toString("hex");
+        $txData = [
+            "nonce" => time(), // can be microtimestamp, unique
+            "to" => "dib.contract", //fixed value
+            "data" => "0x" . $actionDataHash
+        ];
+        $txDataEncode = $rlp->encode($txData)->toString("hex");
+        $ec = new EC('secp256k1');
+        $key = $ec->keyFromPrivate($privateKey);
+        $txDataHash = Keccak::hash($txDataEncode, 256);
+        $signature = $key->sign($txDataHash);
+        $txData["v"] = "0x" . dechex($signature->recoveryParam);
+        $txData["r"] = "0x" . $signature->r->toString("hex");
+        $txData["s"] = "0x" . $signature->s->toString("hex");
+        $rawTx = "0x" . $rlp->encode($txData)->toString("hex");
+        return $this->_post_url('sendRawTransaction', $rawTx);
     }
 
     /*
      * 查询状态
      * */
-    public function get_status($order_no)
+    public function getTransactionByHash($hash)
     {
-        $url = 'get_status';
-        $time = time();
-        $trade_info = [
-            'sign' => $this->_sign([], $time),
-            'time' => $time,
-            'order_no' => $order_no
-        ];
-        return $this->_post_url($this->prefix . $url, $trade_info);
+        return $this->_post_url('getTransactionByHash', $hash);
     }
 
     /*
      * 请求
      * */
-    private function _get_url($url, $trade_info)
+    private function _post_url($method, $params)
     {
-        return $this->_curl($url, json_encode($trade_info), 1);
-    }
-
-    private function _post_url($url, $trade_info)
-    {
-        return $this->_curl($url, json_encode($trade_info), 1);
+        $data = [
+            'jsonrpc' => '2.0',
+            'method' => $method,
+            'params' => (array)$params,
+            'id' => time()
+        ];
+        return $this->_curl($this->prefix, json_encode($data), 1);
     }
 
     private function _curl($url, $params = false, $ispost = 0)
@@ -91,7 +99,7 @@ class DIB
         echo $params;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization:' . $this->AK]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization:' . $this->AccessKey]);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         if ($ispost) {
@@ -114,17 +122,4 @@ class DIB
         return $response;
     }
 
-    /*
-     * sign
-     * */
-    private function _sign($items, $time)
-    {
-        $string = '';
-        foreach ($items as $key => $value) {
-            foreach ($value as $k => $vv) {
-                $string .= $k . ':' . $vv;
-            }
-        }
-        return md5($string . $this->AK . $time);
-    }
 }
