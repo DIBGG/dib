@@ -3,7 +3,7 @@
     "description": "SDK for DIB-An open, reliable and decentralized gaming-items platform",
     "license": "MIT",
     "keywords": ["dib","DIB"],
-    "version": "1.0.0",
+    "version": "2.0.0",
     "authors": [
         {
             "name": "haozhenhua",
@@ -21,11 +21,6 @@
     "autoload": {
         "psr-0": {
             "dib": "src/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
         }
     }
 }
