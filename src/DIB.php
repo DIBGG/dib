@@ -29,7 +29,7 @@ class DIB
     /*
      * 获取某用户名下装备信息
      * */
-    public function getBalance(array $account)
+    public function getBalance($account)
     {
         return $this->_post_url('getBalance', $account);
     }
@@ -45,11 +45,12 @@ class DIB
     /*
      * 向某人索要装备
      * */
-    public function sendRawTransaction($action, $address, $item_code, $item_value, $privateKey)
+    public function sendRawTransaction($action, $from,$to, $item_code, $item_value, $privateKey)
     {
         $actionData = [
             'action' => $action,
-            'address' => $address,
+            'from' => $from,
+            'to' => $to,
             'item_code' => $item_code,
             'item_value' => $item_value
         ];
@@ -103,7 +104,6 @@ class DIB
 
     private function _curl($url, $params = false, $ispost = 0)
     {
-        print_r($params);exit();
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization:' . $this->AccessKey]);
@@ -130,14 +130,3 @@ class DIB
     }
 
 }
-
-
-$dib=new DIB('hN1fzEey17gtVFEJ');
-$action="transfer";
-$address="0x88d60210d5c690d7191957246706d1658157340e";
-$item_code= ["E020401","E030304"];
-$item_value= [1,2];
-$privateKey='0x61c5c7cef76f518ef75a7e40549d9efdf42fb627be0d2dad3836b43e7e784552';
-$res=$dib->sendRawTransaction($action,$address,$item_code,$item_value,$privateKey);
-
-print_r($res);
