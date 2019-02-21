@@ -57,7 +57,7 @@ class DIB
         $rlp = new RLP;
         $actionDataHash = $rlp->encode($actionData)->toString("hex");
         $txData = [
-            "nonce" => time(), // can be microtimestamp, unique
+            "nonce" => "0x" .(string)time(), // can be microtimestamp, unique
             "to" => "dib.contract", //fixed value
             "data" => "0x" . $actionDataHash
         ];
