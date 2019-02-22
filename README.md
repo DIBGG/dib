@@ -1,4 +1,4 @@
-# DICB接口SDK封装
+# DIB接口SDK封装
 SDK for DIB-An open, reliable and decentralized gaming-items platform
 
 ## Usage
