@@ -45,7 +45,7 @@ class DIB
     /*
      * 向某人索要装备
      * */
-    public function sendRawTransaction($action, $from,$to, $item_code, $item_value, $privateKey)
+    public function sendRawTransaction($action, $from, $to, $item_code, $item_value, $privateKey, $nonce = null)
     {
         $actionData = [
             'action' => $action,
@@ -57,7 +57,7 @@ class DIB
         $rlp = new RLP;
         $actionDataHash = $rlp->encode($actionData)->toString("hex");
         $txData = [
-            "nonce" => "0x" .(string)time(), // can be microtimestamp, unique
+            "nonce" => $nonce ?: ("0x" . dechex(intval(microtime(1) * 1000) + rand(10, 99))),
             "to" => "dib.contract", //fixed value
             "data" => "0x" . $actionDataHash
         ];
@@ -84,7 +84,8 @@ class DIB
     /*
      * 取消交易
      * */
-    public function cancelTransaction($hash){
+    public function cancelTransaction($hash)
+    {
         return $this->_post_url('cancelTransaction', $hash);
     }
 

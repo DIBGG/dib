@@ -36,7 +36,8 @@ $to="0x88d60210d5c690d7191957246706d1658157340f";
 $item_code= ["E020401","E030304"];
 $item_value= [1,2];
 $privateKey='0x61c5c7cef76f518ef75a7e40549d9efdf42fb627be0d2dad3836b43e7e784552';
-$res=$dib->sendRawTransaction($action,$from,$to,$item_code,$item_value,$privateKey);
+$nonce="0x1695ca9459b";//不是必选参数
+$res=$dib->sendRawTransaction($action,$from,$to,$item_code,$item_value,$privateKey,$nonce);
 
 
 //4、查询交易状态
