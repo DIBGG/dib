@@ -82,7 +82,7 @@ class DIB
     }
 
      /*
-     * 查询状态
+     * 通过地址和nonce来查询状态
      * */
     public function getTransactionByNonce($address, $nonce)
     {
