@@ -19,7 +19,7 @@ class DIB
     }
 
     /*
-     * 获取装备分类
+     * 获取装备分类.
      * */
     public function getItemsInfo()
     {
