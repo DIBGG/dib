@@ -22,5 +22,10 @@
         "psr-0": {
             "dib": "src/"
         }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2.7"
+        }
     }
 }
