@@ -81,6 +81,14 @@ class DIB
         return $this->_post_url('getTransactionByHash', $hash);
     }
 
+     /*
+     * 查询状态
+     * */
+    public function getTransactionByNonce($address, $nonce)
+    {
+        return $this->_post_url('getTransactionByNonce', [$address, $nonce]);
+    }
+
     /*
      * 取消交易
      * */
