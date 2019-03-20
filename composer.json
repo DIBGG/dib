@@ -17,15 +17,10 @@
         "kornrunner/keccak": "^1.0",
         "simplito/elliptic-php": "^1.0"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-0": {
             "dib": "src/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.2.7-dev"
-        }
-    }
 }
